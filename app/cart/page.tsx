@@ -21,7 +21,7 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <SmoothScrollProvider>
-        <div className="min-h-screen bg-cream flex flex-col">
+        <div className="min-h-screen bg-cream flex flex-col overflow-x-hidden w-full">
           <Header />
           <main className="flex-1 flex items-center justify-center py-32">
             <div className="text-center">
@@ -43,7 +43,7 @@ export default function CartPage() {
 
   return (
     <SmoothScrollProvider>
-      <div className="min-h-screen bg-cream">
+      <div className="min-h-screen bg-cream overflow-x-hidden w-full">
         <Header />
 
         <main className="container mx-auto px-6 lg:px-12 py-32">

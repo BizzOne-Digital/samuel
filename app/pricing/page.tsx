@@ -30,7 +30,7 @@ export default async function PricingPage() {
 
   return (
     <SmoothScrollProvider>
-      <div className="min-h-screen bg-cream">
+      <div className="min-h-screen bg-cream overflow-x-hidden w-full">
         <Header />
 
         {/* Hero Section */}

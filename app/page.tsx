@@ -12,7 +12,7 @@ import Button from '@/components/ui/Button';
 export default function Home() {
   return (
     <SmoothScrollProvider>
-      <div className="min-h-screen bg-cream">
+      <div className="min-h-screen bg-cream overflow-x-hidden w-full">
         <Header />
 
         {/* Hero Section */}
@@ -280,9 +280,9 @@ export default function Home() {
         </section>
 
         {/* Featured Books Preview */}
-        <section className="relative py-24 lg:py-32 bg-black">
+        <section className="relative py-24 lg:py-32 bg-black overflow-hidden">
           <div className="absolute inset-0 bg-grain opacity-30" />
-          <div className="relative container mx-auto px-4 lg:px-8">
+          <div className="relative container mx-auto px-6 lg:px-12">
             <div className="text-center mb-16">
               <motion.span
                 initial={{ opacity: 0, y: 20 }}
@@ -474,8 +474,8 @@ export default function Home() {
         </section>
 
         {/* Testimonials Preview */}
-        <section className="relative py-24 lg:py-32 bg-cream">
-          <div className="container mx-auto px-4 lg:px-8">
+        <section className="relative py-24 lg:py-32 bg-cream overflow-hidden">
+          <div className="container mx-auto px-6 lg:px-12">
             <div className="text-center mb-16">
               <motion.span
                 initial={{ opacity: 0, y: 20 }}

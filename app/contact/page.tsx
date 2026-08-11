@@ -60,7 +60,7 @@ export default function ContactPage() {
 
   return (
     <SmoothScrollProvider>
-      <div className="min-h-screen bg-cream">
+      <div className="min-h-screen bg-cream overflow-x-hidden w-full">
         <Header />
 
         {/* Hero Section */}
