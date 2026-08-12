@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { BookOpen, Mail, Users, FileText, Settings } from 'lucide-react';
+import { BookOpen, Mail, Users, FileText, Settings, Package } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,6 +35,13 @@ export default function AdminDashboard() {
 
   const menuItems = [
     {
+      title: 'Orders',
+      description: 'View and manage customer orders',
+      href: '/admin/orders',
+      icon: Package,
+      color: 'blue',
+    },
+    {
       title: 'Books',
       description: 'Manage books, pricing, and inventory',
       href: '/admin/books',
@@ -42,25 +49,32 @@ export default function AdminDashboard() {
       color: 'emerald',
     },
     {
+      title: 'Pages',
+      description: 'Edit website pages and content',
+      href: '/admin/pages',
+      icon: FileText,
+      color: 'blue',
+    },
+    {
+      title: 'FAQs',
+      description: 'Manage frequently asked questions',
+      href: '/admin/faqs',
+      icon: FileText,
+      color: 'purple',
+    },
+    {
+      title: 'Testimonials',
+      description: 'Manage customer testimonials',
+      href: '/admin/testimonials',
+      icon: Users,
+      color: 'orange',
+    },
+    {
       title: 'Contact Messages',
       description: 'View and respond to messages',
       href: '/admin/messages',
       icon: Mail,
       color: 'blue',
-    },
-    {
-      title: 'Testimonials',
-      description: 'Manage testimonials',
-      href: '/admin/testimonials',
-      icon: Users,
-      color: 'purple',
-    },
-    {
-      title: 'Pages',
-      description: 'Edit website content',
-      href: '/admin/pages',
-      icon: FileText,
-      color: 'orange',
     },
     {
       title: 'Settings',

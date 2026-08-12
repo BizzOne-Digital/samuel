@@ -2,7 +2,14 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+    // Allow local /api/uploads paths
+    unoptimized: false,
     formats: ['image/avif', 'image/webp'],
   },
   experimental: {

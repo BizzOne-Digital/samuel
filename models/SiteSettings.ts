@@ -71,7 +71,7 @@ const SiteSettingsSchema = new Schema<ISiteSettings>(
     },
     defaultSeoDescription: {
       type: String,
-      default: 'Discover the books, conferences, and message of Dr. Samuel Louis Jean.',
+      default: 'Discover the books, conferences, and message of Samuel Louis Jean (Dr. Louis-Jean)—Senior Pastor at Calvary Haitian Baptist Church.',
     },
     defaultSocialImage: String,
     contact: {
@@ -88,11 +88,11 @@ const SiteSettingsSchema = new Schema<ISiteSettings>(
       address: {
         type: String,
         required: true,
-        default: '1615 Night Owl Trail',
+        default: '922 Blanding Blvd',
       },
       city: {
         type: String,
-        default: 'Middleburg',
+        default: 'Orange Park',
       },
       state: {
         type: String,
@@ -100,7 +100,7 @@ const SiteSettingsSchema = new Schema<ISiteSettings>(
       },
       zip: {
         type: String,
-        default: '32068',
+        default: '32065',
       },
       mapUrl: String,
       hours: String,

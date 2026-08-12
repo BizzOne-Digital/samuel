@@ -5,7 +5,7 @@ import Button from '@/components/ui/Button';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Check, BookOpen, ShoppingCart } from 'lucide-react';
-import connectDB from '@/lib/db';
+import connectDB from '@/lib/db/mongodb';
 import PricingOffer from '@/models/PricingOffer';
 import { formatPrice } from '@/lib/utils';
 
@@ -136,7 +136,7 @@ export default async function PricingPage() {
                   <div className="relative z-10">
                     <div className="mb-6">
                       <h3 className="font-display text-2xl text-cream mb-2">
-                        {multiBookOffer.label || 'Three Books Bundle'}
+                        {multiBookOffer.label || 'Four Books for $100'}
                       </h3>
                       <p className="text-cream/90">{multiBookOffer.description || 'Special bundle offer'}</p>
                     </div>

@@ -7,8 +7,8 @@ import Image from 'next/image';
 import { ArrowRight, BookOpen, Users, Award, Heart } from 'lucide-react';
 
 export const metadata = {
-  title: 'About Dr. Samuel Louis Jean | Publications',
-  description: 'Learn about Dr. Samuel Louis Jean, celebrated author and speaker committed to inspiring meaningful growth.',
+  title: 'About Samuel Louis Jean (Dr. Louis-Jean) | Publications',
+  description: 'Learn about Samuel Louis Jean (Dr. Louis-Jean), Senior Pastor at Calvary Haitian Baptist Church and author committed to inspiring meaningful growth.',
 };
 
 export default function AboutPage() {
@@ -23,7 +23,7 @@ export default function AboutPage() {
           <div className="absolute inset-0">
             <Image
               src="/hero-bg.png"
-              alt="About Dr. Samuel Louis Jean"
+              alt="Samuel Louis Jean (Dr. Louis-Jean)"
               fill
               className="object-cover"
               priority
@@ -56,7 +56,7 @@ export default function AboutPage() {
 
               {/* Description */}
               <p className="text-cream/90 text-lg lg:text-xl mb-12 leading-relaxed max-w-2xl">
-                Meet Dr. Samuel Louis Jean: author, speaker, and advocate for meaningful transformation. Discover the journey, message, and vision behind the words.
+                Meet Samuel Louis Jean (Dr. Louis-Jean): Senior Pastor at Calvary Haitian Baptist Church, author, and speaker dedicated to meaningful transformation. Discover the journey, message, and vision behind the words.
               </p>
 
               {/* CTA Button */}
@@ -91,7 +91,7 @@ export default function AboutPage() {
                 <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
                   <Image
                     src="/about-pic.png"
-                    alt="Dr. Samuel Louis Jean"
+                    alt="Samuel Louis Jean (Dr. Louis-Jean)"
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 600px"
@@ -111,13 +111,13 @@ export default function AboutPage() {
                 </h2>
                 <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
                   <p>
-                    Dr. Samuel Louis Jean has dedicated his life to empowering individuals through the written word and spoken message. With a deep commitment to community, education, and spiritual growth, his work bridges cultures and generations.
+                    Samuel Louis Jean (Dr. Louis-Jean) serves as Senior Pastor at Calvary Haitian Baptist Church, located at 922 Blanding Blvd, Orange Park, FL 32065. He has dedicated his life to empowering individuals through the written word and spoken message. With a deep commitment to community, education, and spiritual growth, his work bridges cultures and generations.
                   </p>
                   <p>
-                    His books and conferences have reached audiences worldwide, inspiring meaningful change and personal transformation. Through powerful storytelling and profound insights, Dr. Jean challenges readers and listeners to embrace their full potential.
+                    His books and conferences have reached audiences worldwide, inspiring meaningful change and personal transformation. Through powerful storytelling and profound insights, Dr. Louis-Jean challenges readers and listeners to embrace their full potential.
                   </p>
                   <p>
-                    With a unique ability to connect with diverse audiences, Dr. Jean's message resonates across age groups, cultural backgrounds, and life circumstances. His work embodies the belief that words have the power to transform lives and communities.
+                    With a unique ability to connect with diverse audiences, his message resonates across age groups, cultural backgrounds, and life circumstances. His work embodies the belief that words have the power to transform lives and communities.
                   </p>
                 </div>
               </div>
@@ -186,17 +186,17 @@ export default function AboutPage() {
               </h2>
               <div className="space-y-6 text-lg text-gray-700 leading-relaxed mb-8">
                 <p>
-                  Dr. Jean speaks at conferences, churches, universities, and community events. His messages are tailored to resonate with diverse audiences, addressing topics of faith, leadership, identity, and purpose.
+                  Dr. Louis-Jean speaks at conferences, churches, universities, and community events. His messages are tailored to resonate with diverse audiences, addressing topics of faith, leadership, identity, and purpose.
                 </p>
                 <p>
-                  Whether delivering a keynote address, leading a workshop, or hosting a multi-day conference, Dr. Jean brings authenticity, passion, and transformative insights that leave lasting impact.
+                  Whether delivering a keynote address, leading a workshop, or hosting a multi-day conference, Dr. Louis-Jean brings authenticity, passion, and transformative insights that leave lasting impact.
                 </p>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/booking">
                   <button className="px-8 py-4 bg-emerald-800 hover:bg-emerald-900 text-cream transition-all duration-300 text-sm font-semibold tracking-wider">
-                    BOOK DR. JEAN
+                    BOOK DR. LOUIS-JEAN
                   </button>
                 </Link>
                 <Link href="/services">

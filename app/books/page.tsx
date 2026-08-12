@@ -124,7 +124,7 @@ export default async function BooksPage() {
               Save with Our Bundle Offer
             </h2>
             <p className="text-xl text-cream/90 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Purchase three books for just $60 plus shipping—a perfect way to experience the full breadth of Dr. Jean's transformative work.
+              Purchase all four books for just $100 plus shipping—a perfect way to experience the full breadth of Dr. Louis-Jean&apos;s transformative work.
             </p>
             <Link href="/pricing">
               <button className="px-8 py-4 bg-gold hover:bg-gold-600 text-black transition-all duration-300 text-sm font-semibold tracking-wider">

@@ -4,7 +4,8 @@ import { useSession } from 'next-auth/react';
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Save, Tag, X } from 'lucide-react';
+import ImageUpload from '@/components/admin/ImageUpload';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,8 +13,11 @@ export default function EditBookPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const params = useParams();
+  const bookId = params?.id as string;
+  
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [newTag, setNewTag] = useState('');
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
@@ -26,6 +30,7 @@ export default function EditBookPage() {
     coverImageAlt: '',
     language: 'French',
     category: '',
+    tags: [] as string[],
     inStock: true,
     isFeatured: false,
     isPublished: true,
@@ -39,19 +44,22 @@ export default function EditBookPage() {
   }, [status, router]);
 
   useEffect(() => {
-    if (params.id && params.id !== 'new') {
+    if (bookId && bookId !== 'new') {
       fetchBook();
     } else {
       setLoading(false);
     }
-  }, [params.id]);
+  }, [bookId]);
 
   const fetchBook = async () => {
     try {
-      const response = await fetch(`/api/admin/books/${params.id}`);
+      const response = await fetch(`/api/admin/books/${bookId}`);
       if (response.ok) {
         const data = await response.json();
-        setFormData(data);
+        setFormData({
+          ...data,
+          tags: data.tags || [],
+        });
       }
     } catch (error) {
       console.error('Error fetching book:', error);
@@ -65,11 +73,11 @@ export default function EditBookPage() {
     setSaving(true);
 
     try {
-      const url = params.id === 'new' 
+      const url = bookId === 'new' 
         ? '/api/admin/books' 
-        : `/api/admin/books/${params.id}`;
+        : `/api/admin/books/${bookId}`;
       
-      const method = params.id === 'new' ? 'POST' : 'PUT';
+      const method = bookId === 'new' ? 'POST' : 'PUT';
 
       const response = await fetch(url, {
         method,
@@ -98,9 +106,9 @@ export default function EditBookPage() {
       const checked = (e.target as HTMLInputElement).checked;
       setFormData((prev) => ({ ...prev, [name]: checked }));
     } else if (name === 'price') {
-      setFormData((prev) => ({ ...prev, [name]: parseInt(value) || 0 }));
+      setFormData((prev) => ({ ...prev, [name]: parseFloat(value) || 0 }));
     } else if (name === 'displayOrder') {
-      setFormData((prev) => ({ ...prev, [name]: parseInt(value) || 1 }));
+      setFormData((prev) => ({ ...prev, [name]: parseInt(value) || 0 }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
@@ -113,6 +121,25 @@ export default function EditBookPage() {
       .replace(/(^-|-$)/g, '');
     setFormData((prev) => ({ ...prev, slug }));
   };
+
+  const handleAddTag = () => {
+    if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
+      setFormData((prev) => ({
+        ...prev,
+        tags: [...prev.tags, newTag.trim()],
+      }));
+      setNewTag('');
+    }
+  };
+
+  const handleRemoveTag = (tagToRemove: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      tags: prev.tags.filter(tag => tag !== tagToRemove),
+    }));
+  };
+
+  const quickTags = ['New', 'Featured', 'Coming Soon', 'Bestseller', 'Limited Edition'];
 
   if (status === 'loading' || loading) {
     return (
@@ -131,260 +158,311 @@ export default function EditBookPage() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Header */}
       <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center">
-            <Link
-              href="/admin/books"
-              className="mr-4 p-2 hover:bg-gray-100 rounded-lg transition-colors"
-            >
+            <Link href="/admin/books" className="mr-4 p-2 hover:bg-gray-100 rounded-lg transition-colors">
               <ArrowLeft className="w-6 h-6 text-gray-600" />
             </Link>
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                {params.id === 'new' ? 'Add New Book' : 'Edit Book'}
-              </h1>
-            </div>
+            <h1 className="text-3xl font-bold text-gray-900">
+              {bookId === 'new' ? 'Add New Book' : 'Edit Book'}
+            </h1>
           </div>
         </div>
       </header>
 
-      {/* Form */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-8">
-          {/* Title */}
-          <div className="mb-6">
-            <label className="block text-sm font-semibold text-gray-900 mb-2">
-              Title *
-            </label>
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
-            />
-          </div>
+        <form onSubmit={handleSubmit} className="space-y-8">
+          {/* Book Details */}
+          <div className="bg-white rounded-lg shadow p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Book Details</h2>
+            
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">Title *</label>
+                <input
+                  type="text"
+                  name="title"
+                  value={formData.title}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
+                />
+              </div>
 
-          {/* Slug */}
-          <div className="mb-6">
-            <label className="block text-sm font-semibold text-gray-900 mb-2">
-              Slug *
-            </label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                name="slug"
-                value={formData.slug}
-                onChange={handleChange}
-                required
-                className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
-              />
-              <button
-                type="button"
-                onClick={generateSlug}
-                className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-sm font-semibold"
-              >
-                Generate
-              </button>
-            </div>
-          </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">Slug *</label>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    name="slug"
+                    value={formData.slug}
+                    onChange={handleChange}
+                    required
+                    className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={generateSlug}
+                    className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-sm font-semibold"
+                  >
+                    Generate
+                  </button>
+                </div>
+              </div>
 
-          {/* Short Description */}
-          <div className="mb-6">
-            <label className="block text-sm font-semibold text-gray-900 mb-2">
-              Short Description *
-            </label>
-            <textarea
-              name="shortDescription"
-              value={formData.shortDescription}
-              onChange={handleChange}
-              required
-              rows={3}
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
-            />
-          </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">Author</label>
+                <input
+                  type="text"
+                  name="author"
+                  value={formData.author}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
+                />
+              </div>
 
-          {/* Full Description */}
-          <div className="mb-6">
-            <label className="block text-sm font-semibold text-gray-900 mb-2">
-              Full Description *
-            </label>
-            <textarea
-              name="fullDescription"
-              value={formData.fullDescription}
-              onChange={handleChange}
-              required
-              rows={8}
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
-            />
-          </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">Short Description *</label>
+                <textarea
+                  name="shortDescription"
+                  value={formData.shortDescription}
+                  onChange={handleChange}
+                  required
+                  rows={3}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
+                />
+              </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            {/* Price */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">
-                Price (in cents) *
-              </label>
-              <input
-                type="number"
-                name="price"
-                value={formData.price}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                Display: ${(formData.price / 100).toFixed(2)}
-              </p>
-            </div>
+              <div>
+                <label className="block text-sm font-semibold text-gray-900 mb-2">Full Description</label>
+                <textarea
+                  name="fullDescription"
+                  value={formData.fullDescription}
+                  onChange={handleChange}
+                  rows={6}
+                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
+                />
+              </div>
 
-            {/* Format/Edition */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">
-                Format/Edition
-              </label>
-              <input
-                type="text"
-                name="format"
-                value={formData.format}
-                onChange={handleChange}
-                placeholder="e.g., French Edition"
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
-              />
-            </div>
-          </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-900 mb-2">Price (in cents) *</label>
+                  <input
+                    type="number"
+                    name="price"
+                    value={formData.price}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
+                  />
+                  <p className="text-sm text-gray-600 mt-1">Current price: ${(formData.price / 100).toFixed(2)}</p>
+                </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            {/* Language */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">
-                Language *
-              </label>
-              <select
-                name="language"
-                value={formData.language}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
-              >
-                <option value="French">French</option>
-                <option value="English">English</option>
-                <option value="Haitian Creole">Haitian Creole</option>
-              </select>
-            </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-900 mb-2">Format</label>
+                  <input
+                    type="text"
+                    name="format"
+                    value={formData.format}
+                    onChange={handleChange}
+                    placeholder="e.g., Paperback, Hardcover"
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
+                  />
+                </div>
 
-            {/* Category */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-900 mb-2">
-                Category
-              </label>
-              <input
-                type="text"
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-                placeholder="e.g., Marriage & Relationships"
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
-              />
+                <div>
+                  <label className="block text-sm font-semibold text-gray-900 mb-2">Language</label>
+                  <select
+                    name="language"
+                    value={formData.language}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
+                  >
+                    <option value="English">English</option>
+                    <option value="French">French</option>
+                    <option value="Haitian Creole">Haitian Creole</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-900 mb-2">Category</label>
+                  <input
+                    type="text"
+                    name="category"
+                    value={formData.category}
+                    onChange={handleChange}
+                    placeholder="e.g., Faith, Personal Growth"
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-900 mb-2">Display Order</label>
+                  <input
+                    type="number"
+                    name="displayOrder"
+                    value={formData.displayOrder}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Cover Image */}
-          <div className="mb-6">
-            <label className="block text-sm font-semibold text-gray-900 mb-2">
-              Cover Image Path
-            </label>
-            <input
-              type="text"
-              name="coverImage"
+          <div className="bg-white rounded-lg shadow p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Cover Image</h2>
+            
+            <ImageUpload
               value={formData.coverImage}
-              onChange={handleChange}
-              placeholder="/uploads/books/book-1.jpg"
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
+              onChange={(url) => setFormData(prev => ({ ...prev, coverImage: url }))}
+              folder="books"
+              label="Book Cover"
             />
-          </div>
 
-          {/* Display Order */}
-          <div className="mb-6">
-            <label className="block text-sm font-semibold text-gray-900 mb-2">
-              Display Order
-            </label>
-            <input
-              type="number"
-              name="displayOrder"
-              value={formData.displayOrder}
-              onChange={handleChange}
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
-            />
-          </div>
-
-          {/* Checkboxes */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="flex items-center">
+            <div className="mt-4">
+              <label className="block text-sm font-semibold text-gray-900 mb-2">Cover Image Alt Text</label>
               <input
-                type="checkbox"
-                name="isFeatured"
-                checked={formData.isFeatured}
+                type="text"
+                name="coverImageAlt"
+                value={formData.coverImageAlt}
                 onChange={handleChange}
-                className="w-5 h-5 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
+                placeholder="Describe the cover image"
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
               />
-              <label className="ml-3 text-sm font-semibold text-gray-900">
-                Featured
-              </label>
-            </div>
-
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                name="isPublished"
-                checked={formData.isPublished}
-                onChange={handleChange}
-                className="w-5 h-5 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
-              />
-              <label className="ml-3 text-sm font-semibold text-gray-900">
-                Published
-              </label>
-            </div>
-
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                name="inStock"
-                checked={formData.inStock}
-                onChange={handleChange}
-                className="w-5 h-5 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
-              />
-              <label className="ml-3 text-sm font-semibold text-gray-900">
-                In Stock
-              </label>
             </div>
           </div>
 
-          {/* Submit Button */}
-          <div className="flex gap-4">
-            <button
-              type="submit"
-              disabled={saving}
-              className="flex-1 px-6 py-4 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center"
-            >
-              {saving ? (
-                'Saving...'
-              ) : (
-                <>
-                  <Save className="w-5 h-5 mr-2" />
-                  Save Book
-                </>
+          {/* Tags */}
+          <div className="bg-white rounded-lg shadow p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Tags</h2>
+            
+            <div className="space-y-4">
+              <div className="flex gap-2 flex-wrap">
+                {quickTags.map((tag) => (
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => {
+                      if (!formData.tags.includes(tag)) {
+                        setFormData((prev) => ({
+                          ...prev,
+                          tags: [...prev.tags, tag],
+                        }));
+                      }
+                    }}
+                    className="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm hover:bg-emerald-100 hover:text-emerald-700 transition-colors"
+                  >
+                    + {tag}
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={newTag}
+                  onChange={(e) => setNewTag(e.target.value)}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleAddTag();
+                    }
+                  }}
+                  placeholder="Add custom tag..."
+                  className="flex-1 px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-emerald-600 focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={handleAddTag}
+                  className="px-4 py-2 bg-emerald-700 text-white rounded-lg hover:bg-emerald-800 transition-colors"
+                >
+                  <Tag className="w-5 h-5" />
+                </button>
+              </div>
+
+              {formData.tags.length > 0 && (
+                <div className="flex gap-2 flex-wrap">
+                  {formData.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-sm font-semibold"
+                    >
+                      {tag}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveTag(tag)}
+                        className="hover:text-emerald-900"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
               )}
-            </button>
-            <Link
-              href="/admin/books"
-              className="px-6 py-4 bg-gray-200 hover:bg-gray-300 text-gray-900 font-semibold rounded-lg transition-colors"
-            >
-              Cancel
-            </Link>
+            </div>
+          </div>
+
+          {/* Settings */}
+          <div className="bg-white rounded-lg shadow p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Settings</h2>
+            
+            <div className="space-y-4">
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  name="inStock"
+                  checked={formData.inStock}
+                  onChange={handleChange}
+                  className="w-5 h-5 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
+                />
+                <label className="ml-3 text-sm font-semibold text-gray-900">In Stock</label>
+              </div>
+
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  name="isFeatured"
+                  checked={formData.isFeatured}
+                  onChange={handleChange}
+                  className="w-5 h-5 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
+                />
+                <label className="ml-3 text-sm font-semibold text-gray-900">Featured</label>
+              </div>
+
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  name="isPublished"
+                  checked={formData.isPublished}
+                  onChange={handleChange}
+                  className="w-5 h-5 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
+                />
+                <label className="ml-3 text-sm font-semibold text-gray-900">Published</label>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex gap-4">
+              <button
+                type="submit"
+                disabled={saving}
+                className="flex-1 px-6 py-4 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded-lg disabled:opacity-50 flex items-center justify-center"
+              >
+                {saving ? 'Saving...' : (
+                  <>
+                    <Save className="w-5 h-5 mr-2" />
+                    Save Book
+                  </>
+                )}
+              </button>
+              <Link href="/admin/books" className="px-6 py-4 bg-gray-200 hover:bg-gray-300 text-gray-900 font-semibold rounded-lg flex items-center justify-center">
+                Cancel
+              </Link>
+            </div>
           </div>
         </form>
       </main>

@@ -20,6 +20,11 @@ interface Book {
   coverImage?: string;
   coverImageAlt?: string;
   isFeatured: boolean;
+  tags?: string[];
+}
+
+function hasNewTag(tags?: string[]) {
+  return tags?.some((tag) => tag.toLowerCase() === 'new') ?? false;
 }
 
 function BookCard({ book }: { book: Book }) {
@@ -63,8 +68,17 @@ function BookCard({ book }: { book: Book }) {
             </div>
           )}
           
+          {hasNewTag(book.tags) && (
+            <div className="absolute top-4 left-4 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-bold uppercase tracking-wide">
+              NEW
+            </div>
+          )}
+
           {book.isFeatured && (
-            <div className="absolute top-4 left-4 bg-emerald-700 text-cream px-3 py-1 rounded-full text-sm font-bold">
+            <div className={cn(
+              "absolute left-4 bg-emerald-700 text-cream px-3 py-1 rounded-full text-sm font-bold",
+              hasNewTag(book.tags) ? "top-14" : "top-4"
+            )}>
               Featured
             </div>
           )}

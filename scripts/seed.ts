@@ -55,9 +55,9 @@ async function seed() {
     );
     
     await AdminUser.findOneAndUpdate(
-      { email: process.env.ADMIN_EMAIL || 'admin@samuellou isjean.com' },
+      { email: process.env.ADMIN_EMAIL || 'admin@samuellouisjean.com' },
       {
-        email: process.env.ADMIN_EMAIL || 'admin@samuellouis jean.com',
+        email: process.env.ADMIN_EMAIL || 'admin@samuellouisjean.com',
         password: hashedPassword,
         name: 'Administrator',
         role: 'super_admin',
@@ -75,14 +75,14 @@ async function seed() {
         siteName: 'Samuel Louis Jean Publications',
         tagline: 'Words That Inspire. Ideas That Transform.',
         defaultSeoTitle: 'Samuel Louis Jean Publications - Author & Speaker',
-        defaultSeoDescription: 'Discover the books, conferences, and message of Dr. Samuel Louis Jean—an author and speaker committed to inspiring meaningful growth.',
+        defaultSeoDescription: 'Discover the books, conferences, and message of Dr. Samuel Louis Jean—Senior Pastor at Calvary Haitian Baptist Church and author committed to inspiring meaningful growth.',
         contact: {
           email: 'dr.louisjean@yahoo.com',
           phone: '904-444-3061',
-          address: '1615 Night Owl Trail',
-          city: 'Middleburg',
+          address: '922 Blanding Blvd',
+          city: 'Orange Park',
           state: 'FL',
-          zip: '32068',
+          zip: '32065',
         },
         footer: {
           description: 'Inspiring meaningful growth through powerful words and transformative ideas.',
@@ -120,7 +120,7 @@ async function seed() {
           {
             sectionName: 'Hero',
             heading: 'Words That Inspire. Ideas That Transform.',
-            body: 'Discover the books, conferences, and message of Dr. Samuel Louis Jean—an author and speaker committed to inspiring meaningful growth.',
+            body: 'Discover the books, conferences, and message of Samuel Louis Jean (Dr. Louis-Jean)—Senior Pastor at Calvary Haitian Baptist Church and author committed to inspiring meaningful growth.',
             primaryCtaLabel: 'Explore the Books',
             primaryCtaUrl: '/books',
             secondaryCtaLabel: 'Book a Speaking Engagement',
@@ -133,8 +133,8 @@ async function seed() {
             sectionName: 'Author Introduction',
             eyebrow: 'About the Author',
             heading: 'A Voice for Transformation',
-            body: 'Dr. Samuel Louis Jean is a celebrated author and speaker whose work inspires individuals and communities to embrace meaningful change. Through powerful books and engaging conferences, he shares insights that resonate across generations.',
-            primaryCtaLabel: 'Learn More About Dr. Jean',
+            body: 'Samuel Louis Jean (Dr. Louis-Jean) serves as Senior Pastor at Calvary Haitian Baptist Church, located at 922 Blanding Blvd, Orange Park, FL 32065. A celebrated author and speaker, his work inspires individuals and communities to embrace meaningful change. Through powerful books and engaging conferences, he shares insights that resonate across generations.',
+            primaryCtaLabel: 'Learn More About Dr. Louis-Jean',
             primaryCtaUrl: '/about',
             theme: 'cream',
             isVisible: true,
@@ -167,8 +167,8 @@ async function seed() {
           {
             sectionName: 'Special Offer',
             eyebrow: 'Limited Time Offer',
-            heading: 'Three Books for $60',
-            body: 'Take advantage of our special offer: purchase three books for just $60 plus shipping. A perfect way to experience the full breadth of Dr. Jean\'s transformative work.',
+            heading: 'Four Books for $100',
+            body: 'Take advantage of our special offer: purchase all four books for just $100 plus shipping. A perfect way to experience the full breadth of Dr. Louis-Jean\'s transformative work.',
             primaryCtaLabel: 'Get This Offer',
             primaryCtaUrl: '/pricing',
             theme: 'gold',
@@ -203,7 +203,7 @@ async function seed() {
           {
             sectionName: 'Hero',
             heading: 'A Life Dedicated to Inspiration',
-            body: 'Meet Dr. Samuel Louis Jean: author, speaker, and advocate for meaningful transformation.',
+            body: 'Meet Samuel Louis Jean (Dr. Louis-Jean): Senior Pastor at Calvary Haitian Baptist Church, author, and speaker dedicated to meaningful transformation.',
             theme: 'dark',
             isVisible: true,
             displayOrder: 1,
@@ -212,7 +212,7 @@ async function seed() {
             sectionName: 'Biography',
             eyebrow: 'The Journey',
             heading: 'From Vision to Voice',
-            body: 'Dr. Samuel Louis Jean has dedicated his life to empowering individuals through the written word and spoken message. With a deep commitment to community, education, and spiritual growth, his work bridges cultures and generations. His books and conferences have reached audiences worldwide, inspiring meaningful change and personal transformation.',
+            body: 'Samuel Louis Jean (Dr. Louis-Jean) serves as Senior Pastor at Calvary Haitian Baptist Church located at 922 Blanding Blvd, Orange Park, FL 32065. He has dedicated his life to empowering individuals through the written word and spoken message. With a deep commitment to community, education, and spiritual growth, his work bridges cultures and generations. His books and conferences have reached audiences worldwide, inspiring meaningful change and personal transformation.',
             theme: 'cream',
             isVisible: true,
             displayOrder: 2,
@@ -236,6 +236,162 @@ async function seed() {
             theme: 'dark',
             isVisible: true,
             displayOrder: 4,
+          },
+        ],
+      },
+      { upsert: true, new: true }
+    );
+
+    // Create Books Page
+    await Page.findOneAndUpdate(
+      { pageKey: 'books' },
+      {
+        pageKey: 'books',
+        title: 'Books',
+        slug: '/books',
+        metaTitle: 'Books | Samuel Louis Jean Publications',
+        metaDescription: 'Explore transformative books by Dr. Samuel Louis Jean',
+        isPublished: true,
+        sections: [
+          {
+            sectionName: 'Hero',
+            eyebrow: 'Publications',
+            heading: 'Transformative Books That Inspire Change',
+            body: 'Explore a collection of thought-provoking publications designed to inspire, challenge, and empower readers to reach their full potential.',
+            backgroundImage: '/hero-bg.png',
+            theme: 'dark',
+            isVisible: true,
+            displayOrder: 1,
+          },
+        ],
+      },
+      { upsert: true, new: true }
+    );
+
+    // Create Gallery Page
+    await Page.findOneAndUpdate(
+      { pageKey: 'gallery' },
+      {
+        pageKey: 'gallery',
+        title: 'Gallery',
+        slug: '/gallery',
+        metaTitle: 'Gallery | Samuel Louis Jean Publications',
+        metaDescription: 'Photo gallery of events, conferences, and moments',
+        isPublished: true,
+        sections: [
+          {
+            sectionName: 'Hero',
+            eyebrow: 'Photo Gallery',
+            heading: 'Capturing Moments That Inspire',
+            body: 'A visual journey through conferences, events, and special moments that have shaped our ministry and community.',
+            backgroundImage: '/hero-bg.png',
+            theme: 'dark',
+            isVisible: true,
+            displayOrder: 1,
+          },
+        ],
+      },
+      { upsert: true, new: true }
+    );
+
+    // Create Pricing Page
+    await Page.findOneAndUpdate(
+      { pageKey: 'pricing' },
+      {
+        pageKey: 'pricing',
+        title: 'Pricing',
+        slug: '/pricing',
+        metaTitle: 'Pricing | Samuel Louis Jean Publications',
+        metaDescription: 'View pricing options for books by Dr. Samuel Louis Jean',
+        isPublished: true,
+        sections: [
+          {
+            sectionName: 'Hero',
+            eyebrow: 'Pricing Options',
+            heading: 'Simple Pricing',
+            body: 'Choose the option that works best for you. All books include insightful content designed to inspire and transform.',
+            backgroundImage: '/hero-bg.png',
+            theme: 'dark',
+            isVisible: true,
+            displayOrder: 1,
+          },
+        ],
+      },
+      { upsert: true, new: true }
+    );
+
+    // Create Contact Page
+    await Page.findOneAndUpdate(
+      { pageKey: 'contact' },
+      {
+        pageKey: 'contact',
+        title: 'Contact',
+        slug: '/contact',
+        metaTitle: 'Contact | Samuel Louis Jean Publications',
+        metaDescription: 'Get in touch with us',
+        isPublished: true,
+        sections: [
+          {
+            sectionName: 'Hero',
+            eyebrow: 'Let Us Connect',
+            heading: 'Get in Touch',
+            body: 'Have questions? We would love to hear from you. Send us a message and we will respond as soon as possible.',
+            backgroundImage: '/hero-bg.png',
+            theme: 'dark',
+            isVisible: true,
+            displayOrder: 1,
+          },
+        ],
+      },
+      { upsert: true, new: true }
+    );
+
+    // Create FAQs Page
+    await Page.findOneAndUpdate(
+      { pageKey: 'faqs' },
+      {
+        pageKey: 'faqs',
+        title: 'Frequently Asked Questions',
+        slug: '/faqs',
+        metaTitle: 'FAQs | Samuel Louis Jean Publications',
+        metaDescription: 'Frequently asked questions about our books and services',
+        isPublished: true,
+        sections: [
+          {
+            sectionName: 'Hero',
+            eyebrow: 'Help Center',
+            heading: 'Frequently Asked Questions',
+            body: 'Find answers to common questions about our books, shipping, and speaking engagements.',
+            backgroundImage: '/hero-bg.png',
+            theme: 'dark',
+            isVisible: true,
+            displayOrder: 1,
+          },
+        ],
+      },
+      { upsert: true, new: true }
+    );
+
+    // Create Testimonials Page
+    await Page.findOneAndUpdate(
+      { pageKey: 'testimonials' },
+      {
+        pageKey: 'testimonials',
+        title: 'Testimonials',
+        slug: '/testimonials',
+        metaTitle: 'Testimonials | Samuel Louis Jean Publications',
+        metaDescription: 'What people say about Dr. Samuel Louis Jean',
+        isPublished: true,
+        sections: [
+          {
+            sectionName: 'Hero',
+            eyebrow: 'What People Say',
+            heading: 'Voices of Impact',
+            body: 'Hear from those whose lives have been touched by Dr. Jean\'s words and presence.',
+            backgroundImage: '/hero-bg.png',
+            theme: 'dark',
+            isVisible: true,
+            displayOrder: 1,
           },
         ],
       },
@@ -341,6 +497,7 @@ async function seed() {
         coverImageAlt: 'Comprendre la vie à deux dans le mariage',
         language: 'French',
         category: 'Marriage & Relationships',
+        tags: ['New'],
         inStock: true,
         isFeatured: true,
         isPublished: true,
@@ -367,9 +524,9 @@ async function seed() {
         title: 'Overcoming Obstacles',
         slug: 'overcoming-obstacles',
         author: 'Dr. Samuel Louis Jean',
-        shortDescription: 'Overcoming Obstacles has nothing to do with religion or sects, which tend very often to separate and create friction between people.',
+        shortDescription: 'English version of Franchir Les Obstacles. Overcoming Obstacles has nothing to do with religion or sects, which tend very often to separate and create friction between people.',
         fullDescription: 'Overcoming Obstacles has nothing to do with religion or sects, which tend very often to separate and create friction between people, whereas God, the Creator of Heaven and earth, reconciles and unites His children who were separated, to make them stronger. Overcoming Obstacles falls under Divine jurisdiction and promotes the Architect of the universe, the Dominator, the Liberator and Sustainer par excellence, who has put everything at your disposal. In fact, Overcoming Obstacles is a book that will motivate you to seek the best of your potential, your true identity in the One who created you, in order to live according to the real "you," meaning through your position as a victor in Christ. It is an incentive to use time to your advantage, to believe that even a sudden inspiration to change one\'s life is possible for whoever actively holds on to his or her dearest dreams. Finally, it is an invitation to retrieve your joys, your courage, your peace, your love, and the prosperity that God has procured for you, starting with your salvation.',
-        price: 3000, // $30.00
+        price: 2500, // $25.00 (English version of Franchir Les Obstacles)
         format: 'English Edition',
         coverImage: '/books/book-3.png',
         coverImageAlt: 'Overcoming Obstacles',
@@ -384,6 +541,7 @@ async function seed() {
         title: 'J\'aime Mon Eglise',
         slug: 'jaime-mon-eglise',
         author: 'Dr. Samuel Louis Jean',
+        subtitle: 'I Love My Church',
         shortDescription: 'J\'aime mon Église est un guide à la fois biblique et pratique qui explore la beauté, la mission et la raison d\'être de l\'Église locale.',
         fullDescription: 'J\'aime mon Église est un guide à la fois biblique et pratique qui explore la beauté, la mission et la raison d\'être de l\'Église locale. À travers les Écritures et des enseignements tirés de la vie quotidienne, l\'auteur met en lumière l\'importance de la foi, de la communion fraternelle, de l\'hospitalité, de la croissance spirituelle et de l\'engagement actif au sein du corps de Christ. Encourageant les croyants à aller au-delà d\'une simple présence aux cultes pour vivre un engagement authentique, ce livre est un appel inspirant à aimer, servir et fortifier l\'Église selon le dessein de Dieu.',
         price: 2500, // $25.00
@@ -392,6 +550,7 @@ async function seed() {
         coverImageAlt: 'J\'aime Mon Eglise',
         language: 'French',
         category: 'Faith & Church Life',
+        tags: ['New'],
         inStock: true,
         isFeatured: false,
         isPublished: true,
@@ -447,12 +606,12 @@ async function seed() {
     await PricingOffer.findOneAndUpdate(
       { offerType: 'multi_book' },
       {
-        name: 'Three Books Special',
+        name: 'Four Books Special',
         offerType: 'multi_book',
-        quantity: 3,
-        price: 6000, // $60.00
-        label: 'Three Books for $60',
-        description: 'Special offer: Save when you buy three books',
+        quantity: 4,
+        price: 10000, // $100.00
+        label: 'Four Books for $100',
+        description: 'Special offer: Get all four books and save $20',
         isActive: true,
         displayOrder: 2,
       },
@@ -525,8 +684,8 @@ async function seed() {
         isPublished: true,
       },
       {
-        question: 'What is the special three-book offer?',
-        answer: 'Our special offer allows you to purchase any three books for $60 plus shipping—a savings compared to individual pricing. This offer can be selected during checkout.',
+        question: 'What is the special four-book offer?',
+        answer: 'Our special offer allows you to purchase all four books for $100 plus shipping—a savings compared to purchasing each book individually at $25. This offer can be selected during checkout.',
         category: 'Purchasing',
         displayOrder: 2,
         isPublished: true,

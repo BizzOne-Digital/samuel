@@ -1,18 +1,17 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 
 export interface IOrderItem {
-  bookId?: mongoose.Types.ObjectId;
+  bookId: mongoose.Types.ObjectId;
   title: string;
+  price: number;
   quantity: number;
-  price: number; // in cents
-  subtotal: number; // in cents
 }
 
 export interface IOrder extends Document {
   orderNumber: string;
   customerName: string;
   customerEmail: string;
-  customerPhone: string;
+  customerPhone?: string;
   shippingAddress: {
     address: string;
     city: string;
@@ -21,13 +20,13 @@ export interface IOrder extends Document {
     country: string;
   };
   items: IOrderItem[];
-  subtotal: number; // in cents
-  shippingCharge: number; // in cents
-  total: number; // in cents
-  orderNotes?: string;
+  subtotal: number;
+  shippingCost: number;
+  total: number;
   status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
-  paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
-  internalNotes?: string;
+  paymentStatus: 'pending' | 'paid' | 'failed';
+  notes?: string;
+  adminNotes?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -36,22 +35,20 @@ const OrderItemSchema = new Schema<IOrderItem>({
   bookId: {
     type: Schema.Types.ObjectId,
     ref: 'Book',
+    required: true,
   },
   title: {
     type: String,
-    required: true,
-  },
-  quantity: {
-    type: Number,
     required: true,
   },
   price: {
     type: Number,
     required: true,
   },
-  subtotal: {
+  quantity: {
     type: Number,
     required: true,
+    min: 1,
   },
 });
 
@@ -70,10 +67,7 @@ const OrderSchema = new Schema<IOrder>(
       type: String,
       required: true,
     },
-    customerPhone: {
-      type: String,
-      required: true,
-    },
+    customerPhone: String,
     shippingAddress: {
       address: {
         type: String,
@@ -93,7 +87,6 @@ const OrderSchema = new Schema<IOrder>(
       },
       country: {
         type: String,
-        required: true,
         default: 'USA',
       },
     },
@@ -102,15 +95,14 @@ const OrderSchema = new Schema<IOrder>(
       type: Number,
       required: true,
     },
-    shippingCharge: {
+    shippingCost: {
       type: Number,
-      required: true,
+      default: 0,
     },
     total: {
       type: Number,
       required: true,
     },
-    orderNotes: String,
     status: {
       type: String,
       enum: ['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled'],
@@ -118,21 +110,22 @@ const OrderSchema = new Schema<IOrder>(
     },
     paymentStatus: {
       type: String,
-      enum: ['pending', 'paid', 'failed', 'refunded'],
+      enum: ['pending', 'paid', 'failed'],
       default: 'pending',
     },
-    internalNotes: String,
+    notes: String,
+    adminNotes: String,
   },
   {
     timestamps: true,
   }
 );
 
-// Indexes
+// Index for faster queries
 OrderSchema.index({ orderNumber: 1 });
 OrderSchema.index({ customerEmail: 1 });
-OrderSchema.index({ status: 1, createdAt: -1 });
-OrderSchema.index({ paymentStatus: 1 });
+OrderSchema.index({ status: 1 });
+OrderSchema.index({ createdAt: -1 });
 
 const Order: Model<IOrder> =
   mongoose.models.Order || mongoose.model<IOrder>('Order', OrderSchema);

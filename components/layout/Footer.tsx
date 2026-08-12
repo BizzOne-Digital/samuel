@@ -26,18 +26,60 @@ const footerLinks = {
   ],
 };
 
-const socialLinks = [
-  { name: 'Facebook', icon: Facebook, href: '#' },
-  { name: 'Instagram', icon: Instagram, href: '#' },
-  { name: 'YouTube', icon: Youtube, href: '#' },
-  { name: 'LinkedIn', icon: Linkedin, href: '#' },
-  { name: 'Twitter', icon: Twitter, href: '#' },
-];
+interface FooterProps {
+  settings?: {
+    contact?: {
+      email?: string;
+      phone?: string;
+      address?: string;
+      city?: string;
+      state?: string;
+      zip?: string;
+    };
+    footer?: {
+      description?: string;
+      copyrightText?: string;
+      newsletterText?: string;
+    };
+    social?: {
+      facebook?: string;
+      instagram?: string;
+      youtube?: string;
+      linkedin?: string;
+      twitter?: string;
+    };
+  };
+}
 
-export default function Footer() {
+export default function Footer({ settings }: FooterProps) {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState('');
+
+  const contact = settings?.contact || {
+    email: 'dr.louisjean@yahoo.com',
+    phone: '904-444-3061',
+    address: '922 Blanding Blvd',
+    city: 'Orange Park',
+    state: 'FL',
+    zip: '32065',
+  };
+
+  const footer = settings?.footer || {
+    description: 'Inspiring meaningful growth through powerful words and transformative ideas.',
+    copyrightText: '© 2026 Samuel Louis Jean Publications. All rights reserved.',
+    newsletterText: 'Stay updated with the latest books, events, and inspiring messages.',
+  };
+
+  const social = settings?.social || {};
+
+  const socialLinks = [
+    { name: 'Facebook', icon: Facebook, href: social.facebook || '#' },
+    { name: 'Instagram', icon: Instagram, href: social.instagram || '#' },
+    { name: 'YouTube', icon: Youtube, href: social.youtube || '#' },
+    { name: 'LinkedIn', icon: Linkedin, href: social.linkedin || '#' },
+    { name: 'Twitter', icon: Twitter, href: social.twitter || '#' },
+  ].filter(link => link.href && link.href !== '#');
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,30 +138,30 @@ export default function Footer() {
               </div>
             </Link>
             <p className="text-cream/70 mb-6 leading-relaxed">
-              Inspiring meaningful growth through powerful words and transformative ideas.
+              {footer.description}
             </p>
             
             {/* Contact Info */}
             <div className="space-y-3 text-sm">
               <a
-                href="mailto:dr.louisjean@yahoo.com"
+                href={`mailto:${contact.email}`}
                 className="flex items-center space-x-3 text-cream/70 hover:text-gold transition-colors group"
               >
                 <Mail size={16} className="flex-shrink-0" />
-                <span className="group-hover:underline">dr.louisjean@yahoo.com</span>
+                <span className="group-hover:underline">{contact.email}</span>
               </a>
               <a
-                href="tel:904-444-3061"
+                href={`tel:${contact.phone?.replace(/\D/g, '')}`}
                 className="flex items-center space-x-3 text-cream/70 hover:text-gold transition-colors group"
               >
                 <Phone size={16} className="flex-shrink-0" />
-                <span className="group-hover:underline">904-444-3061</span>
+                <span className="group-hover:underline">{contact.phone}</span>
               </a>
               <div className="flex items-start space-x-3 text-cream/70">
                 <MapPin size={16} className="flex-shrink-0 mt-1" />
                 <span>
-                  1615 Night Owl Trail<br />
-                  Middleburg, FL 32068
+                  {contact.address}<br />
+                  {contact.city}, {contact.state} {contact.zip}
                 </span>
               </div>
             </div>
@@ -180,7 +222,7 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <h3 className="font-display text-lg mb-4 text-gold">Stay Updated</h3>
             <p className="text-cream/70 text-sm mb-4">
-              Subscribe to receive the latest news and updates.
+              {footer.newsletterText}
             </p>
             <form onSubmit={handleNewsletterSubmit} className="space-y-3">
               <input
@@ -208,29 +250,33 @@ export default function Footer() {
         </div>
 
         {/* Social Links */}
-        <div className="border-t border-cream/10 pt-8 mb-8">
-          <div className="flex justify-center space-x-6">
-            {socialLinks.map((social) => {
-              const Icon = social.icon;
-              return (
-                <motion.a
-                  key={social.name}
-                  href={social.href}
-                  whileHover={{ scale: 1.1, y: -2 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="w-10 h-10 rounded-full bg-cream/5 border border-cream/20 flex items-center justify-center text-cream/70 hover:text-gold hover:border-gold transition-colors"
-                  aria-label={social.name}
-                >
-                  <Icon size={18} />
-                </motion.a>
-              );
-            })}
+        {socialLinks.length > 0 && (
+          <div className="border-t border-cream/10 pt-8 mb-8">
+            <div className="flex justify-center space-x-6">
+              {socialLinks.map((socialLink) => {
+                const Icon = socialLink.icon;
+                return (
+                  <motion.a
+                    key={socialLink.name}
+                    href={socialLink.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.1, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-10 h-10 rounded-full bg-cream/5 border border-cream/20 flex items-center justify-center text-cream/70 hover:text-gold hover:border-gold transition-colors"
+                    aria-label={socialLink.name}
+                  >
+                    <Icon size={18} />
+                  </motion.a>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Bottom Bar */}
         <div className="border-t border-cream/10 pt-6 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-sm text-cream/60">
-          <p>© 2026 Samuel Louis Jean Publications. All rights reserved.</p>
+          <p>{footer.copyrightText}</p>
           <div className="flex space-x-6">
             <Link href="/privacy" className="hover:text-cream transition-colors">
               Privacy Policy
