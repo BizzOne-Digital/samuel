@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
 import connectDB from '@/lib/db/mongodb';
 import StoredUpload from '@/models/StoredUpload';
+import { getAdminSession } from '@/lib/admin-auth';
 
 const ALLOWED_FOLDERS = ['products', 'gallery', 'pages', 'misc', 'books'];
 const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
@@ -14,7 +14,7 @@ function generateRandomHex(length: number = 8): string {
 export async function POST(request: NextRequest) {
   try {
     // Check authentication
-    const session = await getServerSession();
+    const session = await getAdminSession();
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }

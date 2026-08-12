@@ -13,6 +13,8 @@ export const metadata = {
   description: 'Frequently asked questions about our books and services',
 };
 
+export const dynamic = 'force-dynamic';
+
 async function getPageData() {
   await connectDB();
   const page = await Page.findOne({ pageKey: 'faqs' }).lean();

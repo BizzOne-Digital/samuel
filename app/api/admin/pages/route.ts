@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
 import connectDB from '@/lib/db/mongodb';
 import Page from '@/models/Page';
+import { getAdminSession } from '@/lib/admin-auth';
+import { revalidatePageSlug } from '@/lib/revalidate-public';
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession();
+    const session = await getAdminSession();
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -22,7 +23,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession();
+    const session = await getAdminSession();
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -30,7 +31,7 @@ export async function POST(request: NextRequest) {
     await connectDB();
     const data = await request.json();
     const page = await Page.create(data);
-    
+    revalidatePageSlug(page.slug);
     return NextResponse.json(page, { status: 201 });
   } catch (error) {
     console.error('Error creating page:', error);

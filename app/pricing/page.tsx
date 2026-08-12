@@ -14,6 +14,8 @@ export const metadata = {
   description: 'View pricing options for books by Dr. Samuel Louis Jean',
 };
 
+export const dynamic = 'force-dynamic';
+
 async function getPricingOffers() {
   await connectDB();
   const offers = await PricingOffer.find({ isActive: true })

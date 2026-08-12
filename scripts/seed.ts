@@ -639,32 +639,34 @@ async function seed() {
 
     // Create Testimonials
     console.log('💬 Creating testimonials...');
+    await Testimonial.deleteMany({});
+
     const testimonials = [
       {
-        personName: 'Community Leader',
-        role: 'Pastor',
-        organization: 'Local Church',
-        quote: 'Dr. Jean\'s words have transformed our community. His books and speaking engagements inspire lasting change.',
+        personName: 'Francky SAINT-HUBERT',
+        role: 'Commentateur, depuis Paris',
+        quote: `Depuis mon adolescence, son nom résonnait déjà avec une certaine admiration. Originaire d'Aquin, cette ville qui a vu naître tant de figures marquantes d'Haïti, Samuel Louis-Jean s'est très tôt distingué par l'excellence de son parcours scolaire et universitaire. Il faisait partie de ces rares esprits dont l'intelligence force le respect sans jamais chercher à l'imposer. Son brillant parcours académique l'a conduit en France, en Inde au Japon, puis aux États-Unis d'Amérique où il a approfondi notamment ses études en théologie (Ph.D).
+
+Cependant, réduire Samuel Louis-Jean à ses diplômes serait une grave erreur. Car ce qui impressionne davantage que son intelligence, c'est son humilité. Ce qui marque plus que son éloquence, c'est son amour des hommes. Ce qui touche plus que son érudition, c'est sa passion inébranlable pour Jésus-Christ et pour Son Église.
+
+En 2019, Dieu m'a accordé le privilège de faire personnellement sa connaissance ici, à Paris. Cette rencontre a profondément marqué ma vie. J'ai découvert un homme d'une simplicité désarmante, d'une disponibilité rare, toujours prêt à écouter, à conseiller et à encourager. Depuis ce jour, malgré les milliers de kilomètres qui nous séparent, puisqu'il réside en Floride, notre communion fraternelle n'a jamais cessé de grandir.
+
+Nos échanges sur l'Église, la foi, la société et les défis de notre temps ont été pour moi une véritable école. J'y ai trouvé non seulement un interlocuteur brillant, mais également un frère et un homme de Dieu dont la sagesse est constamment éclairée par les Écritures.
+
+Samuel Louis-Jean est un serviteur de Dieu dans toute la noblesse du terme. Sa connaissance approfondie de la Parole, son sens remarquable de la communication, son éloquence naturelle et sa capacité à transmettre les vérités bibliques avec profondeur et simplicité font de lui un orateur d'exception. Mais au-delà de ses qualités intellectuelles, c'est son cœur pastoral qui fait toute la différence.
+
+Voilà pourquoi, son dernier titre "J'aime mon Église" n'est pas un livre de plus sur l'Église. C'est le cri du cœur d'un homme qui la connaît, qui la sert, qui souffre avec elle et qui refuse de la voir affaiblie par l'indifférence, les divisions ou les préjugés. Chaque page porte la marque d'une expérience vécue, d'une réflexion mûrie dans la prière et d'un amour authentique pour le Corps de Christ.
+
+Dans un monde où beaucoup critiquent l'Église sans vraiment la connaître, Samuel Louis-Jean nous invite à changer de regard. Il nous rappelle que l'Église demeure le projet de Dieu, l'Épouse de Christ et l'espérance du monde. L'aimer n'est pas une option ; c'est une responsabilité spirituelle (1 Cor. 6:19-20).
+
+Dr. Louis-Jean,
+Recevez ici l'expression de ma profonde admiration et de ma sincère gratitude. Merci pour votre fidélité au Seigneur, votre intégrité, votre enseignement et votre engagement sans relâche au service de l'Évangile de Jésus-Christ. Merci également pour tout ce que j'ai appris à vos côtés, au fil de nos échanges fraternels, souvent riches, toujours édifiants.
+
+Puisse cette œuvre toucher des milliers de vies, réveiller des consciences, restaurer l'amour de l'Église dans le cœur des croyants et contribuer à l'avancement du Royaume de Dieu, pour la seule gloire de Jésus-Christ.`,
+        locale: 'fr',
         isFeatured: true,
         isPublished: true,
         displayOrder: 1,
-      },
-      {
-        personName: 'Dedicated Reader',
-        role: 'Educator',
-        organization: 'Public School',
-        quote: 'The insights in Dr. Jean\'s work have profoundly impacted my life and teaching. Highly recommended!',
-        isFeatured: true,
-        isPublished: true,
-        displayOrder: 2,
-      },
-      {
-        personName: 'Event Organizer',
-        role: 'Conference Director',
-        quote: 'Booking Dr. Jean for our conference was the best decision we made. Our attendees were deeply moved and inspired.',
-        isFeatured: true,
-        isPublished: true,
-        displayOrder: 3,
       },
     ];
 

@@ -8,6 +8,8 @@ import Testimonial from '@/models/Testimonial';
 import { getSettings } from '@/lib/getSettings';
 import HomeClient from './HomeClient';
 
+export const dynamic = 'force-dynamic';
+
 async function getHomeData() {
   await connectDB();
   const page = await Page.findOne({ pageKey: 'home' }).lean();

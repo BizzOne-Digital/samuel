@@ -9,6 +9,8 @@ export const metadata = {
   description: 'Get in touch with us',
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function ContactPage() {
   const settings = await getSettings();
 

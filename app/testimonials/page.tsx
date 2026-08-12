@@ -12,6 +12,8 @@ export const metadata = {
   description: 'What people say about Dr. Samuel Louis Jean',
 };
 
+export const dynamic = 'force-dynamic';
+
 async function getPageData() {
   await connectDB();
   const page = await Page.findOne({ pageKey: 'testimonials' }).lean();
@@ -78,38 +80,30 @@ export default async function TestimonialsPage() {
           <div className="container mx-auto px-6 lg:px-12">
             <div className="max-w-7xl mx-auto">
               {testimonials.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="max-w-4xl mx-auto space-y-12">
                   {testimonials.map((testimonial: any) => (
-                    <div
+                    <article
                       key={testimonial._id}
-                      className="bg-cream border-2 border-gray-200 rounded-xl p-8 hover:border-emerald-600 hover:shadow-xl transition-all duration-300"
+                      className="bg-cream border-2 border-gray-200 rounded-xl p-8 lg:p-12 hover:border-emerald-600 hover:shadow-xl transition-all duration-300"
                     >
-                      <Quote className="w-12 h-12 text-gold mb-4" />
+                      <Quote className="w-12 h-12 text-gold mb-6" />
                       
-                      <p className="text-gray-700 text-lg leading-relaxed mb-6 italic">
-                        "{testimonial.quote}"
-                      </p>
+                      <div className="text-gray-700 text-lg leading-relaxed space-y-6 whitespace-pre-line">
+                        {testimonial.quote}
+                      </div>
                       
-                      <div className="border-t-2 border-gray-200 pt-4">
-                        <p className="font-semibold text-gray-900 text-lg">
+                      <div className="border-t-2 border-gray-200 pt-6 mt-8">
+                        <p className="font-semibold text-gray-900 text-xl">
                           {testimonial.personName}
                         </p>
                         {testimonial.role && (
-                          <p className="text-sm text-gray-600">
+                          <p className="text-gray-600 mt-1">
                             {testimonial.role}
                             {testimonial.organization && `, ${testimonial.organization}`}
                           </p>
                         )}
                       </div>
-
-                      {testimonial.isFeatured && (
-                        <div className="mt-4">
-                          <span className="inline-block px-3 py-1 bg-gold/20 text-gold-800 text-xs font-semibold rounded-full">
-                            Featured
-                          </span>
-                        </div>
-                      )}
-                    </div>
+                    </article>
                   ))}
                 </div>
               ) : (

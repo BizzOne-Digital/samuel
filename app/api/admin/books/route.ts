@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
 import connectDB from '@/lib/db';
 import Book from '@/models/Book';
+import { getAdminSession } from '@/lib/admin-auth';
+import { revalidatePublicPages } from '@/lib/revalidate-public';
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession();
+    const session = await getAdminSession();
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -21,7 +22,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession();
+    const session = await getAdminSession();
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -29,6 +30,7 @@ export async function POST(request: NextRequest) {
     await connectDB();
     const data = await request.json();
     const book = await Book.create(data);
+    revalidatePublicPages();
     return NextResponse.json(book, { status: 201 });
   } catch (error) {
     console.error('Error creating book:', error);

@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
 import connectDB from '@/lib/db/mongodb';
 import SiteSettings from '@/models/SiteSettings';
+import { getAdminSession } from '@/lib/admin-auth';
+import { revalidatePublicPages } from '@/lib/revalidate-public';
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession();
+    const session = await getAdminSession();
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -14,7 +15,6 @@ export async function GET(request: NextRequest) {
     let settings = await SiteSettings.findOne();
     
     if (!settings) {
-      // Create default settings if none exist
       settings = await SiteSettings.create({
         siteName: 'Samuel Louis Jean Publications',
         tagline: 'Words That Inspire. Ideas That Transform.',
@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    const session = await getServerSession();
+    const session = await getAdminSession();
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -59,6 +59,7 @@ export async function PUT(request: NextRequest) {
       settings = await SiteSettings.create(data);
     }
 
+    revalidatePublicPages();
     return NextResponse.json(settings);
   } catch (error) {
     console.error('Error updating settings:', error);

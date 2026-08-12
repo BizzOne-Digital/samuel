@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
 import connectDB from '@/lib/db/mongodb';
 import Page from '@/models/Page';
+import { getAdminSession } from '@/lib/admin-auth';
+import { revalidatePageSlug } from '@/lib/revalidate-public';
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession();
+    const session = await getAdminSession();
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -33,7 +34,7 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession();
+    const session = await getAdminSession();
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -47,6 +48,7 @@ export async function PUT(
       return NextResponse.json({ error: 'Page not found' }, { status: 404 });
     }
 
+    revalidatePageSlug(page.slug);
     return NextResponse.json(page);
   } catch (error) {
     console.error('Error updating page:', error);
@@ -59,7 +61,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession();
+    const session = await getAdminSession();
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -72,6 +74,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Page not found' }, { status: 404 });
     }
 
+    revalidatePageSlug(page.slug);
     return NextResponse.json({ message: 'Page deleted successfully' });
   } catch (error) {
     console.error('Error deleting page:', error);

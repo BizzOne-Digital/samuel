@@ -598,7 +598,7 @@ export default function HomeClient({
               </motion.h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
+            <div className="max-w-4xl mx-auto mb-12">
               {testimonials.map((testimonial, i) => (
                 <motion.div
                   key={testimonial._id}
@@ -606,10 +606,10 @@ export default function HomeClient({
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: i * 0.1 }}
                   viewport={{ once: true }}
-                  className="bg-white p-8 rounded-xl shadow-lg"
+                  className="bg-white p-8 lg:p-10 rounded-xl shadow-lg"
                 >
                   <div className="text-gold text-4xl mb-4">"</div>
-                  <p className="text-midnight-300/80 mb-6 leading-relaxed">
+                  <p className="text-midnight-300/80 mb-6 leading-relaxed line-clamp-6">
                     {testimonial.quote}
                   </p>
                   <div>

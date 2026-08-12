@@ -13,6 +13,8 @@ export const metadata = {
   description: 'Explore transformative books by Dr. Samuel Louis Jean',
 };
 
+export const dynamic = 'force-dynamic';
+
 async function getBooks() {
   await connectDB();
   const books = await Book.find({ isPublished: true })
