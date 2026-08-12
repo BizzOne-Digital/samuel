@@ -2,10 +2,10 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import SmoothScrollProvider from '@/components/providers/SmoothScrollProvider';
 import Image from 'next/image';
-import { Quote } from 'lucide-react';
 import connectDB from '@/lib/db/mongodb';
 import Testimonial from '@/models/Testimonial';
 import Page from '@/models/Page';
+import TestimonialsCarousel from './TestimonialsCarousel';
 
 export const metadata = {
   title: 'Testimonials | Samuel Louis Jean Publications',
@@ -80,32 +80,7 @@ export default async function TestimonialsPage() {
           <div className="container mx-auto px-6 lg:px-12">
             <div className="max-w-7xl mx-auto">
               {testimonials.length > 0 ? (
-                <div className="max-w-4xl mx-auto space-y-12">
-                  {testimonials.map((testimonial: any) => (
-                    <article
-                      key={testimonial._id}
-                      className="bg-cream border-2 border-gray-200 rounded-xl p-8 lg:p-12 hover:border-emerald-600 hover:shadow-xl transition-all duration-300"
-                    >
-                      <Quote className="w-12 h-12 text-gold mb-6" />
-                      
-                      <div className="text-gray-700 text-lg leading-relaxed space-y-6 whitespace-pre-line">
-                        {testimonial.quote}
-                      </div>
-                      
-                      <div className="border-t-2 border-gray-200 pt-6 mt-8">
-                        <p className="font-semibold text-gray-900 text-xl">
-                          {testimonial.personName}
-                        </p>
-                        {testimonial.role && (
-                          <p className="text-gray-600 mt-1">
-                            {testimonial.role}
-                            {testimonial.organization && `, ${testimonial.organization}`}
-                          </p>
-                        )}
-                      </div>
-                    </article>
-                  ))}
-                </div>
+                <TestimonialsCarousel testimonials={testimonials} />
               ) : (
                 <div className="text-center py-12">
                   <p className="text-gray-600 text-lg">No testimonials available at this time.</p>

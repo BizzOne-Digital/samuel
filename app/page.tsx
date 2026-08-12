@@ -14,7 +14,7 @@ async function getHomeData() {
   await connectDB();
   const page = await Page.findOne({ pageKey: 'home' }).lean();
   const books = await Book.find({ isPublished: true, isFeatured: true }).sort({ displayOrder: 1 }).limit(3).lean();
-  const testimonials = await Testimonial.find({ isPublished: true, isFeatured: true }).sort({ displayOrder: 1 }).limit(3).lean();
+  const testimonials = await Testimonial.find({ isPublished: true, isFeatured: true }).sort({ displayOrder: 1 }).limit(7).lean();
   const settings = await getSettings();
   
   return {

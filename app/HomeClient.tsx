@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { BookOpen, Users } from 'lucide-react';
 import Button from '@/components/ui/Button';
+import TestimonialsCarousel from '@/app/testimonials/TestimonialsCarousel';
 
 interface Section {
   sectionName: string;
@@ -598,31 +599,8 @@ export default function HomeClient({
               </motion.h2>
             </div>
 
-            <div className="max-w-4xl mx-auto mb-12">
-              {testimonials.map((testimonial, i) => (
-                <motion.div
-                  key={testimonial._id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: i * 0.1 }}
-                  viewport={{ once: true }}
-                  className="bg-white p-8 lg:p-10 rounded-xl shadow-lg"
-                >
-                  <div className="text-gold text-4xl mb-4">"</div>
-                  <p className="text-midnight-300/80 mb-6 leading-relaxed line-clamp-6">
-                    {testimonial.quote}
-                  </p>
-                  <div>
-                    <p className="font-semibold text-midnight-300">{testimonial.personName}</p>
-                    {testimonial.role && (
-                      <p className="text-sm text-midnight-300/60">
-                        {testimonial.role}
-                        {testimonial.organization && `, ${testimonial.organization}`}
-                      </p>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
+            <div className="mb-12">
+              <TestimonialsCarousel testimonials={testimonials} variant="dark" />
             </div>
 
             <div className="text-center">
