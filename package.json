@@ -1,0 +1,53 @@
+{
+  "name": "samuel-louis-jean-publications",
+  "version": "1.0.0",
+  "description": "Official website and CMS for Samuel Louis Jean Publications",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "seed": "tsx scripts/seed.ts",
+    "update-amazon-links": "tsx scripts/update-amazon-links.ts",
+    "type-check": "tsc --noEmit",
+    "stripe:listen": "stripe listen --forward-to localhost:3000/api/webhooks/stripe",
+    "stripe:check": "tsx scripts/check-stripe.ts",
+    "smtp:test": "tsx scripts/test-smtp.ts"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.10.0",
+    "@types/bcrypt": "^6.0.0",
+    "@types/node": "^22.20.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "autoprefixer": "^10.5.4",
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^2.4.3",
+    "clsx": "^2.1.1",
+    "dotenv": "^17.4.2",
+    "framer-motion": "^11.18.2",
+    "gsap": "^3.15.0",
+    "lenis": "^1.3.26",
+    "lucide-react": "^0.468.0",
+    "mongoose": "^8.24.3",
+    "next": "^16.3.0",
+    "next-auth": "^4.24.15",
+    "nodemailer": "^7.0.13",
+    "postcss": "^8.5.26",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-hook-form": "^7.85.0",
+    "stripe": "^22.6.0",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^5.9.3",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.7",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/nodemailer": "^8.0.1",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.3.6",
+    "tsx": "^4.19.2"
+  }
+}
