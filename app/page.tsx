@@ -7,6 +7,10 @@ import Book from '@/models/Book';
 import Testimonial from '@/models/Testimonial';
 import { getSettings } from '@/lib/getSettings';
 import HomeClient from './HomeClient';
+import {
+  normalizePageSection,
+  normalizeTestimonialQuote,
+} from '@/lib/normalize-honoree-text';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,12 +34,27 @@ export default async function Home() {
   const sections = page?.sections || [];
   
   // Get sections by name for easier access
-  const heroSection = sections.find((s: any) => s.sectionName === 'Hero');
-  const authorSection = sections.find((s: any) => s.sectionName === 'Author Introduction');
-  const booksSection = sections.find((s: any) => s.sectionName === 'Featured Books');
-  const speakingSection = sections.find((s: any) => s.sectionName === 'Speaking & Conferences');
-  const offerSection = sections.find((s: any) => s.sectionName === 'Special Offer');
-  const testimonialsSection = sections.find((s: any) => s.sectionName === 'Testimonials Preview');
+  const heroSection = normalizePageSection(
+    sections.find((s: any) => s.sectionName === 'Hero')
+  );
+  const authorSection = normalizePageSection(
+    sections.find((s: any) => s.sectionName === 'Author Introduction')
+  );
+  const booksSection = normalizePageSection(
+    sections.find((s: any) => s.sectionName === 'Featured Books')
+  );
+  const speakingSection = normalizePageSection(
+    sections.find((s: any) => s.sectionName === 'Speaking & Conferences')
+  );
+  const offerSection = normalizePageSection(
+    sections.find((s: any) => s.sectionName === 'Special Offer')
+  );
+  const testimonialsSection = normalizePageSection(
+    sections.find((s: any) => s.sectionName === 'Testimonials Preview')
+  );
+  const normalizedTestimonials = testimonials.map((t: { quote?: string }) =>
+    normalizeTestimonialQuote(t)
+  );
 
   return (
     <SmoothScrollProvider>
@@ -50,7 +69,7 @@ export default async function Home() {
           offerSection={offerSection}
           testimonialsSection={testimonialsSection}
           books={books}
-          testimonials={testimonials}
+          testimonials={normalizedTestimonials}
         />
 
         <Footer settings={settings} />

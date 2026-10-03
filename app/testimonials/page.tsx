@@ -7,6 +7,11 @@ import connectDB from '@/lib/db/mongodb';
 import Testimonial from '@/models/Testimonial';
 import Page from '@/models/Page';
 import TestimonialsCarousel from './TestimonialsCarousel';
+import {
+  normalizeHonoreeText,
+  normalizePageSection,
+  normalizeTestimonialQuote,
+} from '@/lib/normalize-honoree-text';
 
 export const metadata = {
   title: 'Testimonials | Samuel Louis-Jean Publications',
@@ -28,7 +33,12 @@ async function getPageData() {
 
 export default async function TestimonialsPage() {
   const { page, testimonials } = await getPageData();
-  const heroSection = page?.sections?.find((s: any) => s.sectionName === 'Hero');
+  const heroSection = normalizePageSection(
+    page?.sections?.find((s: any) => s.sectionName === 'Hero')
+  );
+  const displayTestimonials = testimonials.map((t: { quote?: string }) =>
+    normalizeTestimonialQuote(t)
+  );
 
   return (
     <SmoothScrollProvider>
@@ -69,7 +79,7 @@ export default async function TestimonialsPage() {
 
               {heroSection.body && (
                 <p className="text-cream/90 text-lg lg:text-xl mb-12 leading-relaxed max-w-3xl mx-auto">
-                  {heroSection.body}
+                  {normalizeHonoreeText(heroSection.body)}
                 </p>
               )}
             </div>
@@ -81,7 +91,7 @@ export default async function TestimonialsPage() {
           <div className="container mx-auto px-6 lg:px-12">
             <div className="max-w-7xl mx-auto">
               {testimonials.length > 0 ? (
-                <TestimonialsCarousel testimonials={testimonials} />
+                <TestimonialsCarousel testimonials={displayTestimonials} />
               ) : (
                 <div className="text-center py-12">
                   <p className="text-gray-600 text-lg">No testimonials available at this time.</p>

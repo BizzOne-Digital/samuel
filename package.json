@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "seed": "tsx scripts/seed.ts",
     "update-amazon-links": "tsx scripts/update-amazon-links.ts",
+    "fix-dr-jean-copy": "tsx scripts/fix-dr-jean-copy.ts",
     "type-check": "tsc --noEmit",
     "stripe:listen": "stripe listen --forward-to localhost:3000/api/webhooks/stripe",
     "stripe:check": "tsx scripts/check-stripe.ts",

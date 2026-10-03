@@ -7,6 +7,7 @@ import connectDB from '@/lib/db/mongodb';
 import FAQ from '@/models/FAQ';
 import Page from '@/models/Page';
 import FAQAccordion from './FAQAccordion';
+import { normalizeFaq, normalizeHonoreeText, normalizePageSection } from '@/lib/normalize-honoree-text';
 
 export const metadata = {
   title: 'FAQs | Samuel Louis-Jean Publications',
@@ -28,10 +29,15 @@ async function getPageData() {
 
 export default async function FAQsPage() {
   const { page, faqs } = await getPageData();
-  const heroSection = page?.sections?.find((s: any) => s.sectionName === 'Hero');
+  const heroSection = normalizePageSection(
+    page?.sections?.find((s: any) => s.sectionName === 'Hero')
+  );
+  const normalizedFaqs = faqs.map((faq: { question?: string; answer?: string }) =>
+    normalizeFaq(faq)
+  );
 
   // Group FAQs by category
-  const faqsByCategory = faqs.reduce((acc: any, faq: any) => {
+  const faqsByCategory = normalizedFaqs.reduce((acc: any, faq: any) => {
     const category = faq.category || 'General';
     if (!acc[category]) {
       acc[category] = [];
@@ -79,7 +85,7 @@ export default async function FAQsPage() {
 
               {heroSection.body && (
                 <p className="text-cream/90 text-lg lg:text-xl mb-12 leading-relaxed max-w-3xl mx-auto">
-                  {heroSection.body}
+                  {normalizeHonoreeText(heroSection.body)}
                 </p>
               )}
             </div>

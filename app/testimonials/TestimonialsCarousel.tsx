@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { normalizeHonoreeText } from '@/lib/normalize-honoree-text';
 
 interface Testimonial {
   _id: string;
@@ -75,7 +76,7 @@ export default function TestimonialsCarousel({
             isDark ? 'text-midnight-300/85' : 'text-gray-700'
           )}
         >
-          {current.quote}
+          {normalizeHonoreeText(current.quote)}
         </p>
 
         {(isLast || total === 1) && (
